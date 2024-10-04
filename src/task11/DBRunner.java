@@ -1,7 +1,6 @@
 package task11;
 
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
@@ -103,7 +102,7 @@ public class DBRunner {
 	public static void main(String[] args) {
 		DBRunner runner=new DBRunner();
 		try {
-			runner.q2();
+			runner.q5();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
