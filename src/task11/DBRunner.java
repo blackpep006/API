@@ -16,7 +16,7 @@ public class DBRunner {
 		process=new DBProcess();
 		input=new Scanner(System.in);
 	}
-    private void printResultSet(List<Employee> result) throws SQLException {
+    private <T> void printResultSet(List<T> result) {
     	int size=result.size();
     	for(int i=0;i<size;i++) {
     		System.out.println(result.get(i));
@@ -91,18 +91,18 @@ public class DBRunner {
     	String dependentName="dependent";
     	System.out.print("Enter the id:");
     	int id=input.nextInt();
-    	process.dependentDetailsOf(dependentName,id);
+    	printResultSet(process.dependentDetailsOf(dependentName,id));
     }
     public void q12() throws CustomException {
     	String dependentName="dependent";
     	System.out.print("Enter a number:");
-    	process.dependentDetailsOfFirstNEmployees(dependentName, input.nextInt());
+    	printResultSet(process.dependentDetailsOfFirstNEmployees(dependentName, input.nextInt()));
     }
     
 	public static void main(String[] args) {
 		DBRunner runner=new DBRunner();
 		try {
-			runner.q5();
+			runner.q12();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

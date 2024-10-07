@@ -16,39 +16,37 @@ public class DBProcess {
 	String url = "jdbc:mysql://localhost:3306/incubationDB"; 
     String user = "root";
     String password = "Pass#word.09"; 
-    public void createTable(String DBName) throws CustomException {
-    	Helper.validate(DBName);
+    private void execute(String query) throws CustomException {
+    	Helper.validate(query);
     	try (Connection connection = DriverManager.getConnection(url, user, password);
                 Statement statement = connection.createStatement()) {
 
-               String createTableSQL = "CREATE TABLE "+DBName+"("
+               statement.executeUpdate(query);
+
+           } catch (SQLException e) {
+               throw new CustomException("Exception in creating DB",e);
+           }
+    }
+    public void createTable(String DBName) throws CustomException {
+    	Helper.validate(DBName);
+
+               String query = "CREATE TABLE "+DBName+"("
                        + "EMPLOYEE_ID INT PRIMARY KEY, "
                        + "NAME VARCHAR(100) NOT NULL, "
                        + "MOBILE VARCHAR(15), "
                        + "EMAIL VARCHAR(100) UNIQUE, "
                        + "DEPARTMENT VARCHAR(50)"
                        + ");";
-
-               statement.executeUpdate(createTableSQL);
-
-           } catch (SQLException e) {
-               throw new CustomException("Exception in creating DB",e);
-           }
+         execute(query);
     }
     public void addDetail(String DBName,int id,String name,String mobileNo,String email,String dept) throws CustomException {
     	Helper.validate(id);
     	Helper.validate(DBName);
-    	try (Connection connection = DriverManager.getConnection(url, user, password);
-                Statement statement = connection.createStatement()) {
 
     		String insertSQL = "INSERT INTO "+DBName+" (EMPLOYEE_ID, NAME, MOBILE, EMAIL, DEPARTMENT) "
                     + "VALUES (" + id + ", '" + name + "', '" + mobileNo + "', '" + email + "', '" + dept + "');";
 
-             statement.executeUpdate(insertSQL);
-
-         } catch (SQLException e) {
-              throw new CustomException("Exception in creating DB",e);
-         }
+       execute(insertSQL);
     }
     public List<Employee> getDetailForName(String DBName,String name) throws CustomException {
     	String query = "SELECT * FROM "+DBName+" WHERE NAME = '" + name + "'";
@@ -135,54 +133,46 @@ public class DBProcess {
     public void createDepadentTable(String DBName,String depadentTableName) throws CustomException {
     	Helper.validate(DBName);
     	Helper.validate(depadentTableName);
-    	try (Connection connection = DriverManager.getConnection(url, user, password);
-                Statement statement = connection.createStatement()) {
-
-               String createTableSQL = "CREATE TABLE "+depadentTableName+" ("
+               String query = "CREATE TABLE "+depadentTableName+" ("
                		+ "    EMPLOYEE_ID INT,"
                		+ "    NAME VARCHAR(100),"
                		+ "    AGE INT,"
                		+ "    RELATIONSHIP VARCHAR(50),"
                		+ "    FOREIGN KEY (EMPLOYEE_ID) REFERENCES "+DBName+" (EMPLOYEE_ID)"
                		+ ");";
-
-               statement.executeUpdate(createTableSQL);
-
-           } catch (SQLException e) {
-               throw new CustomException("Exception in creating DB",e);
-           }
+         execute(query);
     }
     public void addDetailForDependent(String DBName,int id,String name,int age,String relation) throws CustomException {
     	Helper.validate(id);
     	Helper.validate(DBName);
-    	try (Connection connection = DriverManager.getConnection(url, user, password);
-                Statement statement = connection.createStatement()) {
-
-    		String insertSQL = "INSERT INTO "+DBName+" (EMPLOYEE_ID, NAME, AGE, RELATIONSHIP) "
+    		String query = "INSERT INTO "+DBName+" (EMPLOYEE_ID, NAME, AGE, RELATIONSHIP) "
                     + "VALUES (" + id + ", '" + name + "', '" + age + "', '" + relation + "');";
 
-             statement.executeUpdate(insertSQL);
-
-         } catch (SQLException e) {
-              throw new CustomException("Exception in creating DB",e);
-         }
+        execute(query);
     }
-	public void dependentDetailsOf(String dependentTableName,int id) throws CustomException {
+	public List<Data> dependentDetailsOf(String dependentTableName,int id) throws CustomException {
 		Helper.validate(id);
     	Helper.validate(dependentTableName);
     	String query="SELECT * FROM "+dependentTableName+" WHERE EMPLOYEE_ID =?";
+    	List<Data> result=new ArrayList<Data>();
     	try(Connection connection=DriverManager.getConnection(url,user,password);
     			PreparedStatement preparedStatement=connection.prepareStatement(query);){
     		preparedStatement.setInt(1,id);
     		ResultSet resultSet=preparedStatement.executeQuery();
     		while (resultSet.next()) {
-                System.out.println(resultSet.getInt("EMPLOYEE_ID")+resultSet.getString("NAME")+resultSet.getString("AGE")+resultSet.getString("RELATIONSHIP"));
+    			Data data=new Data();
+                data.setAttribute("EMPLOYEE_ID",resultSet.getInt("EMPLOYEE_ID"));
+                data.setAttribute("NAME",resultSet.getString("NAME"));
+                data.setAttribute("AGE",resultSet.getString("AGE"));
+                data.setAttribute("RELATIONSHIP",resultSet.getString("RELATIONSHIP"));
+                result.add(data);
             }
+    		return result;
     	}catch(SQLException e) {
     		throw new CustomException("Exception in firstNData",e);
     	}
 	}
-	public void dependentDetailsOfFirstNEmployees(String dependentTableName, int n) throws CustomException {
+	public List<Data> dependentDetailsOfFirstNEmployees(String dependentTableName, int n) throws CustomException {
 	    Helper.validate(n);
 	    Helper.validate(dependentTableName);
 	    
@@ -191,7 +181,7 @@ public class DBProcess {
 	                   "JOIN " + dependentTableName + " d ON e.EMPLOYEE_ID = d.EMPLOYEE_ID " +
 	                   "ORDER BY d.NAME ASC " +
 	                   "LIMIT ?";
-
+	    List<Data> result=new ArrayList<Data>();
 	    try (Connection connection = DriverManager.getConnection(url, user, password);
 	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 	        
@@ -199,13 +189,15 @@ public class DBProcess {
 	        ResultSet resultSet = preparedStatement.executeQuery();
 
 	        while (resultSet.next()) {
-	            System.out.println("Employee ID: " + resultSet.getInt("EMPLOYEE_ID") + 
-	                               ", Employee Name: " + resultSet.getString("EmployeeName") + 
-	                               ", Dependent Name: " + resultSet.getString("DependentName") + 
-	                               ", Age: " + resultSet.getInt("AGE") + 
-	                               ", Relationship: " + resultSet.getString("RELATIONSHIP"));
+	            Data data=new Data();
+                data.setAttribute("EMPLOYEE_ID",resultSet.getInt("EMPLOYEE_ID"));
+                data.setAttribute("EmployeeName",resultSet.getString("EmployeeName"));
+                data.setAttribute("DependentName",resultSet.getString("DependentName"));
+                data.setAttribute("AGE",resultSet.getString("AGE"));
+                data.setAttribute("RELATIONSHIP",resultSet.getString("RELATIONSHIP"));
+                result.add(data);
 	        }
-
+	        return result;
 	    } catch (SQLException e) {
 	        throw new CustomException("Exception in fetching dependent details", e);
 	    }
