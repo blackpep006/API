@@ -13,6 +13,7 @@ public class DBRunner {
 	Scanner input;
 	String DBName="Employee";
 	DBRunner(){
+		int a;
 		process=new DBProcess();
 		input=new Scanner(System.in);
 	}
