@@ -29,6 +29,7 @@ public class DBRunner {
    	 	int size=1;
    	 	for(int i=0;i<size;i++){
    	 		System.out.print("Enter ur ID:");
+   	 		int alphabot;
    	 		int id=input.nextInt();
    	 		System.out.print("Enter ur Name:");
 	 		String name=input.next();
