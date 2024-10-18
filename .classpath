@@ -12,7 +12,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/mysql-connector-j-9.0.0.jar"/>
-	<classpathentry kind="lib" path="/home/dhiva-tt0491/eclipse-workspace/API/lib/protobuf-java-4.28.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
