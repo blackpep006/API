@@ -1,0 +1,134 @@
+bankClass:
+  Account:
+    tableName: account
+    primaryKey:
+      - id
+    autoIncrementColumn: id
+    fields:
+      id: 
+        columnName: id
+      userId: 
+        columnName: user_id
+      balance: 
+        columnName: balance
+      status: 
+        columnName: status
+      createdBy: 
+        columnName: created_by
+      createdTime: 
+        columnName: created_time
+      modifiedTime: 
+        columnName: modified_time
+      modifiedBy: 
+        columnName: modified_by
+      branchId: 
+        columnName: branch_id
+
+  Branch:
+    tableName: branch
+    primaryKey:
+      - id
+    autoIncrementColumn: id
+    fields:
+      id: 
+        columnName: id
+      ifsc: 
+        columnName: ifsc
+      branchName: 
+        columnName: branch_name
+      location: 
+        columnName: location
+      managerId: 
+        columnName: manager_id
+      createdBy: 
+        columnName: created_by
+      createdTime: 
+        columnName: created_time
+      modifiedBy: 
+        columnName: modified_by
+      modifiedTime: 
+        columnName: modified_time
+      status:
+        columnName: status
+
+  Customer:
+    tableName: customer
+    primaryKey:
+      - id
+    fields:
+      id: 
+        columnName: id
+      panNo: 
+        columnName: pan_no
+      aadhar: 
+        columnName: aadhar
+      address: 
+        columnName: address
+
+  Employee:
+    tableName: employee
+    primaryKey:
+      - id
+    fields:
+      id: 
+        columnName: id
+      branchId: 
+        columnName: branch_id
+
+  Transaction:
+    tableName: transaction
+    primaryKey:
+      - transaction_id
+      - account_id
+    autoIncrementColumn: id
+    fields:
+      transactionId: 
+        columnName: transaction_id
+      accountId: 
+        columnName: account_id
+      transferAccountId: 
+        columnName: transfer_account_id
+      customerId: 
+        columnName: customer_id
+      balance: 
+        columnName: balance
+      amountTransferred: 
+        columnName: amount_transferred
+      remark: 
+        columnName: remark
+      time: 
+        columnName: time
+      createdBy: 
+        columnName: created_by
+
+  User:
+    tableName: user
+    primaryKey:
+      - id
+    autoIncrementColumn: id
+    fields:
+      id: 
+        columnName: id
+      username: 
+        columnName: username
+      password: 
+        columnName: password
+      phoneNo: 
+        columnName: phone_no
+      email: 
+        columnName: email
+      status: 
+        columnName: status
+      createdBy: 
+        columnName: created_by
+      createdTime: 
+        columnName: created_time
+      modifiedBy: 
+        columnName: modified_by
+      modifiedTime: 
+        columnName: modified_time
+      lastLogin: 
+        columnName: last_login
+      role: 
+        columnName: role
+
