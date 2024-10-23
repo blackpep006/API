@@ -13,8 +13,8 @@ import util.Helper;
 public class Runner {
 	public static void main(String[] args) throws CustomException{
 		APIs apis=new APIs();
-		//System.out.println(apis.getBranch(1));
-		apis.deleteCustomer(43);
+		System.out.println(apis.getAccount(3));
+		//apis.deleteCustomer(43);
 //		alpha dogggg
 //		Customer cus = new Customer();
 //		cus.setId(44);

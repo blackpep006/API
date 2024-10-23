@@ -238,8 +238,10 @@ public class APIs {
 	}
 	public List<Employee> getEmployeeForBranch(int id) throws CustomException{
 		arguments=new SQLArguments();
-		arguments.setClazz(pojo.Employee.class);
+		arguments.setClazz(Employee.class);
+		arguments.setJoinTable(pojo.User.class);
 		arguments.setWhere(Arrays.asList(new Condition("branch_id",id)));
+		arguments.setJoinCondition("user.id=employee.id");
 		return DAOImp.get(arguments);
 	}
 	public List<Branch> getBranchForManager(int id) throws CustomException{

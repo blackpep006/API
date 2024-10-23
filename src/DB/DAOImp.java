@@ -144,7 +144,7 @@ public class DAOImp {
         	}
         	sql.setLength(sql.length()-2);
         }else {
-        	sql.append("*");
+        	sql.append("* ");
         }
         sql.append( "FROM " + tableName);
         if (arguments.getJoinTable() != null && arguments.getJoinCondition() != null) {
